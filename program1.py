@@ -1,0 +1,832 @@
+sudo apt update
+sudo apt install python3 python3-pip
+
+pip3 install Django
+
+sudo apt install python3-django
+
+sudo snap install --classic code
+
+django-admin startproject project1
+
+cd project1
+
+python manage.py startapp datetimeapp
+
+
+
+=============================================
+#in the datetimeapp directory, create a file named views.py and add the following code:
+=========================================
+from django.shortcuts import render
+from datetime import datetime
+
+def current_datetime(request):
+    now = datetime.now()
+    return render(request, 'datetimeapp/current_datetime.html', {'current_date': now})
+
+
+
+===============================================
+
+=============================================
+#Create a folder named templates in the datetimeapp directory. Inside the templates folder, #create another folder named datetimeapp. In this new folder, create a file named #current_datetime.html and add the following code:
+==================================
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Date and Time</title>
+    <style>
+        h1 {
+            text-align: center;
+            color: red;
+            font-size: 56px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Current Date and Time</h1>
+    <p>The current date and time is: {{ current_date }}</p>
+    <style>
+        p {
+            text-align: center;
+            color: blue;
+            font-size: 40px;
+            font-weight: italic;
+        }
+    </style>
+</body>
+</html>
+
+
+
+=============================================
+
+
+=================================================
+#In the datetimeapp directory, create a file named urls.py and add the following code:
+=====================================
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.current_datetime, name='current_datetime'),
+]
+
+
+===============================================
+
+=================================================
+#include the datetimeapp URLs in the project's URL configuration. Open the urls.py file in the #project1 directory and modify it as follows:
+
+=================================================
+=========================================
+# in urls.py update the code from project1 Directory
+===========================================
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('datetimeapp.urls')),
+]
+
+==========================================
+
+==============================================
+# In settings.py add the newly created app name
+
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'datetimeapp',
+]
+
+=============================================
+cd ..
+
+sudo apt install python3.10-venv
+
+python3 -m venv venv
+
+
+source venv/bin/activate
+
+
+pip install django
+
+cd project1
+
+
+python3 manage.py migrate
+
+python3 manage.py runserver
+
+==========================================================
+
+Program-2
+===========================================================
+Develop a Django app that displays date and time four hours ahead and four hours before as an offset of current date and time in server.
+===========================================================
+django-admin startproject datetime_project
+
+
+cd datetime_project
+
+python3 manage.py startapp datetime_app
+
+In datetime_app/views.py, define a view function that calculates the current date and time, adds and subtracts four hours, and renders a template displaying these times.
+=========================================
+
+from django.shortcuts import render
+from datetime import datetime, timedelta
+# Create your views here.
+
+
+def datetime_offset(request):
+    current_datetime = datetime.now()
+    datetime_ahead = current_datetime + timedelta(hours=4)
+    datetime_before = current_datetime - timedelta(hours=4)
+    
+    context = {
+        'current_datetime': current_datetime,
+        'datetime_ahead': datetime_ahead,
+        'datetime_before': datetime_before,
+    }
+    return render(request, 'datetime_app/datetime_offset.html', context)
+=========================================
+
+In datetime_app/templates/datetime_app/datetime_offset.html, create a template to display the calculated times.
+================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Date and Time Offset</title>
+</head>
+<body>
+    <h1>Current Date and Time: {{ current_datetime }}</h1>
+    <style>
+        h1 {
+            text-align: center;
+            color: red;
+            font-size: 56px;
+            font-weight: bold;
+        }
+    </style>
+    <h2>Date and Time Four Hours Ahead: {{ datetime_ahead }}</h2>
+    <style>
+        h2 {
+            text-align: center;
+            color: blue;
+            font-size: 56px;
+            font-weight: bold;
+        }
+    </style>
+    <h3>Date and Time Four Hours Before: {{ datetime_before }}</h3>
+    <style>
+        h3 {
+            text-align: center;
+            color: purple;
+            font-size: 56px;
+            font-weight: bold;
+        }
+    </style>
+</body>
+</html>
+
+================================================
+
+In datetime_project/urls.py, include the URL configuration for the datetime_app.
+==============================================
+from django.contrib import admin
+from django.urls import path
+from datetime_app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.datetime_offset, name='datetime_offset'),
+]
+
+==============================================
+
+cd ..
+
+====;sudo apt install python3.10-venv======
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install django
+
+cd datetime_project
+
+python3 manage.py migrate
+
+python3 manage.py runserver
+=======================================
+
+Module-2
+============================
+Develop a simple Django app that displays an unordered list of fruits and ordered list of selected students for an event 
+=========================================
+
+django-admin startproject event_project
+
+cd event_project
+
+python3 manage.py startapp event_app
+
+In event_app/views.py, define two view functions - one for displaying the list of fruits and another for displaying the list of selected students.
+==========================================
+from django.shortcuts import render
+
+def fruit_list(request):
+    fruits = ['Apple', 'Banana', 'Orange', 'Grapes', 'Watermelon']
+    return render(request, 'event_app/fruit_list.html', {'fruits': fruits})
+
+def student_list(request):
+    students = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve']
+    return render(request, 'event_app/student_list.html', {'students': students})
+
+
+==========================================
+Create templates for displaying the lists.
+
+In event_app/templates/event_app/fruit_list.html:
+==============================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fruit List</title>
+</head>
+<body>
+    <h1>Unordered List of Fruits</h1>
+    <ul>
+        {% for fruit in fruits %}
+            <li>{{ fruit }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+==============================
+
+In event_app/templates/event_app/student_list.html:
+
+====================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student List</title>
+</head>
+<body>
+    <h1>Ordered List of Selected Students for the Event</h1>
+    <ol>
+        {% for student in students %}
+            <li>{{ student }}</li>
+        {% endfor %}
+    </ol>
+</body>
+</html>
+
+====================================
+
+In event_project/urls.py, include the URL configurations for the views.
+
+=====================================
+from django.contrib import admin
+from django.urls import path
+from event_app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('fruits/', views.fruit_list, name='fruit_list'),
+    path('students/', views.student_list, name='student_list'),
+]
+
+=====================================
+cd ..
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+cd event_project
+
+python3 manage.py migrate
+
+python3 manage.py runserver
+
+http://127.0.0.1:8000/fruits/
+
+http://127.0.0.1:8000/students/
+
+==========================================
+
+Develop a layout.html with a suitable header (containing navigation menu) and footer with copyright and developer information. Inherit this layout.html and create 3 additional pages: contact us, About Us and Home page of any website. 
+
+django-admin startproject event_project1
+
+cd event_project1
+
+python3 manage.py startapp event_app
+
+================================================
+
+In event_app/templates/event_app/layout.html:
+================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Event Website{% endblock %}</title>
+    <style>
+        /* Add your CSS styles here */
+        /* Example: 
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Navigation Menu</h1>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Event Website. All rights reserved. Developed by Your Name</p>
+    </div>
+</body>
+</html>
+======================================
+Horizontal Navigation Bar
+======================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Event Website{% endblock %}</title>
+    <style>
+        /* Add your CSS styles here */
+        /* Example: 
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        */
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .header ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        .header li {
+            float: left;
+        }
+        .header li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .header li a:hover {
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Event Website. All rights reserved. Developed by Your Name</p>
+    </div>
+</body>
+</html>
+
+================================
+Vertical Navigation Bar
+================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Event Website{% endblock %}</title>
+    <style>
+        /* Add your CSS styles here */
+        /* Example: 
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        */
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .header ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        .header li {
+            /* float: left; Remove this line */
+            display: block; /* Add this line */
+            margin-bottom: 10px; /* Add some space between items */
+        }
+        .header li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .header li a:hover {
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Event Website. All rights reserved. Developed by Your Name</p>
+    </div>
+</body>
+</html>
+=============================================
+
+In event_app/templates/event_app/home.html:
+
+=================================
+{% extends 'event_app/layout.html' %}
+
+{% block title %}Home - Event Website{% endblock %}
+
+{% block content %}
+<h2>Welcome to our Event Website!</h2>
+<p>This is the home page content.</p>
+{% endblock %}
+
+=================================
+
+In event_app/templates/event_app/about_us.html:
+
+======================================
+{% extends 'event_app/layout.html' %}
+
+{% block title %}About Us - Event Website{% endblock %}
+
+{% block content %}
+<h2>About Us</h2>
+<p>This is the about us page content.</p>
+{% endblock %}
+
+======================================
+
+In event_app/templates/event_app/contact_us.html:
+==================================
+{% extends 'event_app/layout.html' %}
+
+{% block title %}Contact Us - Event Website{% endblock %}
+
+{% block content %}
+<h2>Contact Us</h2>
+<p>This is the contact us page content.</p>
+{% endblock %}
+
+===================================
+
+In event_project1/urls.py, include the URL patterns for the new pages.
+
+=====================================
+from django.contrib import admin
+from django.urls import path
+from event_app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('about-us/', views.about_us, name='about_us'),
+    path('contact-us/', views.contact_us, name='contact_us'),
+]
+
+=====================================
+
+In event_app/views.py, define view functions for the new pages.
+
+========================================
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'event_app/home.html')
+
+def about_us(request):
+    return render(request, 'event_app/about_us.html')
+
+def contact_us(request):
+    return render(request, 'event_app/contact_us.html')
+
+
+========================================
+
+cd ..
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+cd event_project1
+
+python3 manage.py migrate
+
+python3 manage.py runserver
+
+    Home: http://127.0.0.1:8000/
+    About Us: http://127.0.0.1:8000/about-us/
+    Contact Us: http://127.0.0.1:8000/contact-us/
+    
+=====================================================================
+Program-3:
+Develop a Django app that performs student registration to a course. It should also display list of students registered for any selected course. Create students and course as models with enrolment as Many-To-Many field.
+===============================================================
+
+django-admin startproject course_registration
+
+cd course_registration
+
+python manage.py startapp registration
+
+ Define models: Define models for students and courses with a many-to-many relationship for enrollment.
+
+In registration/models.py:
+====================================
+from django.db import models
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Course(models.Model):
+    title = models.CharField(max_length=100)
+    students = models.ManyToManyField(Student, through='Enrollment')
+
+    def __str__(self):
+        return self.title
+
+class Enrollment(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    enrollment_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student} enrolled in {self.course}"
+
+====================================
+Register models: Register models in registration/admin.py:
+====================================
+from django.contrib import admin
+from .models import Student, Course, Enrollment
+
+admin.site.register(Student)
+admin.site.register(Course)
+admin.site.register(Enrollment)
+
+====================================
+
+Create views: Define views for student registration and course enrollment in registration/views.py.
+
+============================================
+from django.shortcuts import render, redirect
+from .models import Student, Course, Enrollment
+from .forms import StudentForm, CourseForm
+
+def student_registration(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student_registration')
+    else:
+        form = StudentForm()
+    return render(request, 'registration/student_registration.html', {'form': form})
+
+def course_enrollment(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            course = form.save()
+            students = form.cleaned_data.get('students')
+            for student in students:
+                Enrollment.objects.create(student=student, course=course)
+            return redirect('course_enrollment')
+    else:
+        form = CourseForm()
+    return render(request, 'registration/course_enrollment.html', {'form': form})
+
+def course_students(request, course_id):
+    course = Course.objects.get(id=course_id)
+    students = course.students.all()
+    return render(request, 'registration/course_students.html', {'course': course, 'students': students})
+
+
+============================================
+
+Create forms: Create forms for student registration and course enrollment in registration/forms.py.
+
+===========================================
+
+from django import forms
+from .models import Student, Course
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'email']
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['title', 'students']
+
+===========================================
+
+    Create templates: Create HTML templates for student registration, course enrollment, and course students.
+
+    registration/templates/registration/student_registration.html
+    
+    =================================
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Registration</title>
+</head>
+<body>
+    <h2>Student Registration</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register Student</button>
+    </form>
+</body>
+</html>
+
+    =================================
+    registration/templates/registration/course_enrollment.html
+    
+    ===================================================
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Enrollment</title>
+</head>
+<body>
+    <h2>Course Enrollment</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enroll Students</button>
+    </form>
+</body>
+</html>
+
+    ==================================================
+    registration/templates/registration/course_students.html
+    ==================================================
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Students</title>
+</head>
+<body>
+    <h2>Students Enrolled in {{ course.title }}</h2>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.name }} - {{ student.email }}</li>
+        {% empty %}
+            <li>No students enrolled yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+    ==================================================
+
+In these templates, you'll have forms for registration/enrollment and lists to display enrolled students.
+==================================================
+
+Define URLs: Define URLs to map views in registration/urls.py.
+===========================================
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('student-registration/', views.student_registration, name='student_registration'),
+    path('course-enrollment/', views.course_enrollment, name='course_enrollment'),
+    path('course-students/<int:course_id>/', views.course_students, name='course_students'),
+]
+
+============================================
+
+Include app URLs: Include app URLs in the project's urls.py.
+
+=========================================
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('registration/', include('registration.urls')),
+]
+
+
+==========================================
