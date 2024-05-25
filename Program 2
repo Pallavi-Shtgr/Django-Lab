@@ -1,0 +1,79 @@
+Program-2
+===========================================================
+Develop a Django app that displays date and time four hours ahead and four hours before as an offset of current date and time in server.
+===========================================================
+django-admin startproject datetime_project
+
+
+cd datetime_project
+
+python3 manage.py startapp datetime_app
+
+In datetime_app/views.py, define a view function that calculates the current date and time, adds and subtracts four hours, and renders a template displaying these times.
+=========================================
+
+from django.shortcuts import render
+from datetime import datetime, timedelta
+# Create your views here.
+
+
+def datetime_offset(request):
+    current_datetime = datetime.now()
+    datetime_ahead = current_datetime + timedelta(hours=4)
+    datetime_before = current_datetime - timedelta(hours=4)
+    
+    context = {
+        'current_datetime': current_datetime,
+        'datetime_ahead': datetime_ahead,
+        'datetime_before': datetime_before,
+    }
+    return render(request, 'datetime_app/datetime_offset.html', context)
+=========================================
+
+In datetime_app/templates/datetime_app/datetime_offset.html, create a template to display the calculated times.
+================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Date and Time Offset</title>
+</head>
+<body>
+    <h1>Current Date and Time: {{ current_datetime }}</h1>
+    <h2>Date and Time Four Hours Ahead: {{ datetime_ahead }}</h2>
+    <h2>Date and Time Four Hours Before: {{ datetime_before }}</h2>
+</body>
+</html>
+
+================================================
+
+In datetime_project/urls.py, include the URL configuration for the datetime_app.
+==============================================
+from django.contrib import admin
+from django.urls import path
+from datetime_app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.datetime_offset, name='datetime_offset'),
+]
+
+==============================================
+
+cd ..
+
+====;sudo apt install python3.10-venv======
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install django
+
+cd datetime_project
+
+python3 manage.py migrate
+
+python3 manage.py runserver
+=======================================
+
