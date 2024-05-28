@@ -17,7 +17,7 @@ python manage.py startapp datetimeapp
 
 
 =============================================
-#in the datetimeapp directory, create a file named views.py and add the following code:
+In the datetimeapp directory, create a file named views.py and add the following code:
 =========================================
 from django.shortcuts import render
 from datetime import datetime
