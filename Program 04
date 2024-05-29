@@ -1,0 +1,294 @@
+Develop a layout.html with a suitable header (containing navigation menu) and footer with copyright and developer information. Inherit this layout.html and create 3 additional pages: contact us, About Us and Home page of any website. 
+
+django-admin startproject event_project1
+
+cd event_project1
+
+python3 manage.py startapp event_app
+
+================================================
+
+In event_app/templates/event_app/layout.html:
+================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Event Website{% endblock %}</title>
+    <style>
+        /* Add your CSS styles here */
+        /* Example: 
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Navigation Menu</h1>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Event Website. All rights reserved. Developed by Your Name</p>
+    </div>
+</body>
+</html>
+======================================
+Horizontal Navigation Bar
+======================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Event Website{% endblock %}</title>
+    <style>
+        /* Add your CSS styles here */
+        /* Example: 
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        */
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .header ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        .header li {
+            float: left;
+        }
+        .header li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .header li a:hover {
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Event Website. All rights reserved. Developed by Your Name</p>
+    </div>
+</body>
+</html>
+
+================================
+
+Vertical Navigation Bar
+================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Event Website{% endblock %}</title>
+    <style>
+        /* Add your CSS styles here */
+        /* Example: 
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        */
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .header ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        .header li {
+            /* float: left; Remove this line */
+            display: block; /* Add this line */
+            margin-bottom: 10px; /* Add some space between items */
+        }
+        .header li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .header li a:hover {
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Event Website. All rights reserved. Developed by Your Name</p>
+    </div>
+</body>
+</html>
+=============================================
+
+In event_app/templates/event_app/home.html:
+
+=================================
+{% extends 'event_app/layout.html' %}
+
+{% block title %}Home - Event Website{% endblock %}
+
+{% block content %}
+<h2>Welcome to our Event Website!</h2>
+<p>This is the home page content.</p>
+{% endblock %}
+
+=================================
+
+In event_app/templates/event_app/about_us.html:
+
+======================================
+{% extends 'event_app/layout.html' %}
+
+{% block title %}About Us - Event Website{% endblock %}
+
+{% block content %}
+<h2>About Us</h2>
+<p>This is the about us page content.</p>
+{% endblock %}
+
+======================================
+
+In event_app/templates/event_app/contact_us.html:
+==================================
+{% extends 'event_app/layout.html' %}
+
+{% block title %}Contact Us - Event Website{% endblock %}
+
+{% block content %}
+<h2>Contact Us</h2>
+<p>This is the contact us page content.</p>
+{% endblock %}
+
+===================================
+
+In event_project1/urls.py, include the URL patterns for the new pages.
+
+=====================================
+from django.contrib import admin
+from django.urls import path
+from event_app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('about-us/', views.about_us, name='about_us'),
+    path('contact-us/', views.contact_us, name='contact_us'),
+]
+
+=====================================
+
+In event_app/views.py, define view functions for the new pages.
+
+========================================
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'event_app/home.html')
+
+def about_us(request):
+    return render(request, 'event_app/about_us.html')
+
+def contact_us(request):
+    return render(request, 'event_app/contact_us.html')
+
+
+========================================
+
+cd ..
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+cd event_project1
+
+python3 manage.py migrate
+
+python3 manage.py runserver
+
+    Home: http://127.0.0.1:8000/
+    About Us: http://127.0.0.1:8000/about-us/
+    Contact Us: http://127.0.0.1:8000/contact-us/
+
+    
