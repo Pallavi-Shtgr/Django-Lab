@@ -1,0 +1,118 @@
+2. Develop a model form for student that contains his topic chosen for project, languages used 
+and duration with a model called project. 
+django-admin startproject project3b 
+cd project3b 
+python manage.py startapp app3b 
+code . 
+====================================== 
+#project3b/settings.py 
+# Application definition 
+INSTALLED_APPS = [ 
+45 | P a g e 
+21CS62-Lab Manual 
+'django.contrib.admin', 
+'django.contrib.auth', 
+'django.contrib.contenttypes', 
+'django.contrib.sessions', 
+'django.contrib.messages', 
+'django.contrib.staticfiles', 
+'app3b', 
+] 
+===================================== 
+================================== 
+#app3b/urls.py 
+from django.urls import path 
+from .views import student_create_view 
+urlpatterns = [ 
+path('student/create/', student_create_view, name='student_create'), 
+] 
+======================================== 
+===================================== 
+#app3b/views.py 
+from django.shortcuts import render, redirect 
+from .forms import StudentForm 
+def student_create_view(request): 
+if request.method == 'POST': 
+form = StudentForm(request.POST) 
+if form.is_valid(): 
+form.save() 
+46 | P a g e 
+21CS62-Lab Manual 
+return redirect('student_create') 
+else: 
+form = StudentForm() 
+return render(request, 'app3b/student_form.html', {'form': form}) 
+==================================== 
+===================================== 
+#app3b/admin.py 
+from django.contrib import admin 
+from .models import Student, Project 
+admin.site.register(Student) 
+admin.site.register(Project) 
+==================================== 
+===================================== 
+#app3b/forms.py 
+from django import forms 
+from .models import Student, Project 
+class StudentForm(forms.ModelForm): 
+class Meta: 
+model = Student 
+fields = ['name', 'age', 'project'] 
+==================================== 
+===================================== 
+#app3b/models.py 
+# models.py 
+from django.db import models 
+47 | P a g e 
+21CS62-Lab Manual 
+from datetime import timedelta 
+class Project(models.Model): 
+topic = models.CharField(max_length=200) 
+languages_used = models.CharField(max_length=200) 
+duration = models.DurationField() 
+def __str__(self): 
+return self.topic 
+class Student(models.Model): 
+name = models.CharField(max_length=100) 
+age = models.PositiveIntegerField() 
+project = models.ForeignKey(Project, on_delete=models.CASCADE) 
+def __str__(self): 
+return self.name 
+==================================== 
+===================================== 
+#app3b/templates/app3b/student_form.html 
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>Student Form</title> 
+</head> 
+<body> 
+<h1>Student Form</h1> 
+<form method="post"> 
+48 | P a g e 
+21CS62-Lab Manual 
+{% csrf_token %} 
+{{ form.as_p }} 
+<button type="submit">Save</button> 
+</form> 
+</body> 
+</html> 
+==================================== 
+=================================== 
+#project3b/urls.py 
+from django.contrib import admin 
+from django.urls import path, include 
+urlpatterns = [ 
+path('admin/', admin.site.urls), 
+path('app3b/', include('modelformapp.urls')), 
+] 
+====================================== 
+=================================== 
+cd .. 
+python3 -m venv venv 
+source venv/bin/activate 
+pip install django 
+cd project3b 
+python3 manage.py makemigrations 
+python3 manage.py migrate 
+python3 manage.py createsuperuser 
