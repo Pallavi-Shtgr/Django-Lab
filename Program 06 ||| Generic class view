@@ -102,3 +102,31 @@ return f'{self.student} enrolled in {self.course}'
 {% extends "base_generic.html" %} 
 {% block content %} 
 <h2>Student List</h2>
+<ul> 
+{% for student in students %} 
+<li> 
+<a href="{% url 'student-detail' student.pk %}"> 
+{{ student.first_name }} {{ student.last_name }} 
+</a> 
+</li> 
+{% endfor %} 
+</ul> 
+{% endblock %} 
+==================================== 
+===================================== 
+#app4a/templates/base_generic.html 
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>{% block title %}My Site{% endblock %}</title> 
+</head> 
+<body> 
+<header> 
+<h1>My Site</h1> 
+</header> 
+<nav> 
+<ul> 
+<li><a href="/">Home</a></li> 
+<!-- Add more links here --> 
+</ul> 
+</nav>
