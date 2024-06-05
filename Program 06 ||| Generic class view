@@ -130,3 +130,29 @@ return f'{self.student} enrolled in {self.course}'
 <!-- Add more links here --> 
 </ul> 
 </nav>
+<main> 
+{% block content %}{% endblock %} 
+</main> 
+<footer> 
+<p>&copy; 2024 My Site</p> 
+</footer> 
+</body> 
+</html> 
+==================================== 
+=================================== 
+#project4a/urls.py 
+# program4a/urls.py 
+from django.contrib import admin 
+from django.urls import path, include 
+urlpatterns = [ 
+path('admin/', admin.site.urls), 
+path('', include('app4a.urls')), 
+] 
+====================================== 
+cd .. 
+python3 -m venv venv 
+source venv/bin/activate 
+pip install django 
+cd project4a 
+python3 manage.py makemigrations 
+python3 manage.py migrate 
