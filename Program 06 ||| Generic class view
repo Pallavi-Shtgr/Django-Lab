@@ -9,3 +9,49 @@ code .
 ====================================== 
 #project4a/settings.py 
 # Application definition 
+INSTALLED_APPS = [ 
+'django.contrib.admin', 
+'django.contrib.auth', 
+'django.contrib.contenttypes', 
+'django.contrib.sessions', 
+'django.contrib.messages', 
+'django.contrib.staticfiles', 
+'app4a', 
+] 
+===================================== 
+================================== 
+#app4a/urls.py 
+# urls.py 
+from django.urls import path 
+from .views import StudentListView, StudentDetailView 
+urlpatterns = [ 
+path('app4a/', StudentListView.as_view(), name='student-list'), 
+path('app4a/<int:pk>/', StudentDetailView.as_view(), name='student-detail'), 
+] 
+======================================== 
+===================================== 
+#app4a/views.py 
+# views.py 
+from django.views.generic import ListView, DetailView 
+from .models import Student, Enrollment 
+class StudentListView(ListView): 
+model = Student 
+template_name = 'app4a/student_list.html'  # Adjust to your template path 
+context_object_name = 'students' 
+class StudentDetailView(DetailView): 
+model = Student 
+template_name = 'app4a/student_detail.html'  # Adjust to your template path 
+context_object_name = 'student' 
+def get_context_data(self, **kwargs): 
+context = super().get_context_data(**kwargs) 
+context['enrollments'] = Enrollment.objects.filter(student=self.object) 
+return context 
+==================================== 
+===================================== 
+#app4a/admin.py 
+# admin.py 
+from django.contrib import admin 
+from .models import Student, Course, Enrollment 
+admin.site.register(Student) 
+admin.site.register(Course) 
+admin.site.register(Enrollment)
