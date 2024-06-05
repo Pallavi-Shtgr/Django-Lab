@@ -1,1 +1,11 @@
-
+Module-4: 
+1. For students’ enrolment developed in Module 2, create a generic class view which displays list 
+of students and detail view that displays student details for any selected student in the list. 
+django-admin startproject project4a 
+cd project4a 
+python manage.py startapp app4a 
+code . 
+=================================== 
+====================================== 
+#project4a/settings.py 
+# Application definition 
