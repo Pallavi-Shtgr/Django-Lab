@@ -202,3 +202,117 @@ alert('Error enrolling student.');
 </script> 
 </body> 
 </html>
+#app5a/urls.py 
+from django.urls import path 
+from . import views 
+urlpatterns = [ 
+path('', views.index, name='index'), 
+path('register_student/', views.register_student, name='register_student'), 
+path('enroll_student/', views.enroll_student, name='enroll_student'), 
+path('enrollment/list/', views.enrollment_list, name='enrollment_list'), 
+path('enrollment/list/<int:id>/', views.enrollment_detail, name='enrollment_detail'), 
+] 
+===================================== 
+===================================== 
+#app5a/models.py 
+from django.db import models 
+class Student(models.Model):
+name = models.CharField(max_length=100) 
+age = models.IntegerField() 
+email = models.EmailField() 
+address = models.TextField() 
+def __str__(self): 
+return self.name 
+class Course(models.Model): 
+title = models.CharField(max_length=200) 
+description = models.TextField() 
+def __str__(self): 
+return self.title 
+class Enrollment(models.Model): 
+student = models.ForeignKey(Student, on_delete=models.CASCADE) 
+course = models.ForeignKey(Course, on_delete=models.CASCADE) 
+enrollment_date = models.DateField(auto_now_add=True) 
+def __str__(self): 
+return f"{self.student.name} enrolled in {self.course.title}" 
+===================================== 
+===================================== 
+#app5a/views.py 
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse 
+from .forms import StudentForm, EnrollmentForm 
+from .models import Student, Course, Enrollment 
+def index(request): 
+students = Student.objects.all() 
+courses = Course.objects.all() 
+return render(request, 'app5a/index.html', {'students': students, 'courses': courses}) 
+def register_student(request): 
+if request.method == 'POST': 
+form = StudentForm(request.POST) 
+if form.is_valid(): 
+student = form.save() 
+return 
+student.name}) 
+else: 
+JsonResponse({'status': 'success', 'student_id': student.id, 'student_name': 
+return JsonResponse({'status': 'error', 'errors': form.errors}) 
+else: 
+form = StudentForm() 
+return render(request, 'app5a/register_student.html', {'form': form}) 
+def enroll_student(request): 
+students = Student.objects.all() 
+courses = Course.objects.all() 
+if request.method == 'POST': 
+form = EnrollmentForm(request.POST) 
+if form.is_valid(): 
+form.save()
+return JsonResponse({'status': 'success'}) 
+else: 
+return JsonResponse({'status': 'error', 'errors': form.errors}) 
+else: 
+form = EnrollmentForm() 
+return render(request, 'app5a/enroll_student.html', {'form': form, 'students': students, 'courses': 
+courses}) 
+def enrollment_list(request): 
+enrollments = Enrollment.objects.all() 
+return render(request, 'app5a/enrollment_list.html', {'enrollments': enrollments}) 
+def enrollment_detail(request, id): 
+enrollment = get_object_or_404(Enrollment, id=id) 
+return render(request, 'app5a/enrollment_detail.html', {'enrollment': enrollment}) 
+===================================== 
+===================================== 
+#app5a/admin.py 
+from django.contrib import admin 
+# Register your models here. 
+from .models import Student, Course, Enrollment 
+admin.site.register(Student) 
+admin.site.register(Course) 
+admin.site.register(Enrollment)
+#app5a/forms.py 
+from django import forms 
+from .models import Student, Course, Enrollment 
+class StudentForm(forms.ModelForm): 
+class Meta: 
+model = Student 
+fields = ['name', 'age', 'email', 'address'] 
+class EnrollmentForm(forms.ModelForm): 
+class Meta: 
+model = Enrollment 
+fields = ['student', 'course'] 
+===================================== 
+cd .. 
+python3 -m venv venv 
+source venv/bin/activate 
+pip install django 
+cd project5a 
+python3 manage.py makemigrations 
+python3 manage.py migrate 
+python3 manage.py runserver 
+like http://127.0.0.1:8000/admin/program5app/enrollment/ 
+do modify code and give the view same as http://127.0.0.1:8000/admin/program5app/enrollment/ 
+in http://127.0.0.1:8000/program5app/enrollment/list/
+and  
+like http://127.0.0.1:8000/admin/program5app/enrollment/3/ 
+do modify code and give the same view as 
+http://127.0.0.1:8000/admin/program5app/enrollment/3/  
+in http://127.0.0.1:8000/program5app/enrollment/list/3/ 
+First to to adminb and register student and Coorse and then enroll them from form of template.
