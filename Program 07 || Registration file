@@ -59,3 +59,146 @@ path('app5a/', include('app5a.urls')),
 <button type="submit">Enroll</button> 
 </form>
 <html lang="en">
+<script> 
+$(document).ready(function() { 
+$('#enrollmentForm').on('submit', function(event) { 
+event.preventDefault(); 
+$.ajax({ 
+url: "{% url 'enroll_student' %}", 
+type: 'POST', 
+data: $(this).serialize(), 
+success: function(response) { 
+if (response.status == 'success') { 
+alert('Student enrolled successfully!'); 
+} else { 
+alert('Error enrolling student.'); 
+console.log(response.errors); 
+} 
+} 
+}); 
+}); 
+}); 
+</script> 
+</body> 
+</html> 
+===================================== 
+========================================= 
+<!-- app5a/templates/app5a/enrollment_list.html --> 
+<!DOCTYPE html>
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<title>Enrollment List</title> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+</head> 
+<body> 
+<h1>Enrollment List</h1> 
+<div id="enrollmentList"> 
+{% for enrollment in enrollments %} 
+<div> 
+<a href="#" class="enrollmentDetail" data-id="{{ enrollment.id }}">{{ 
+enrollment.student.name }} enrolled in {{ enrollment.course.title }}</a> 
+</div> 
+{% endfor %} 
+</div> 
+<div id="enrollmentDetail"></div> 
+<script> 
+$(document).ready(function() { 
+$('.enrollmentDetail').on('click', function(event) { 
+event.preventDefault(); 
+var enrollmentId = $(this).data('id'); 
+$.ajax({ 
+url: `/program5app/enrollment/list/${enrollmentId}/`, 
+type: 'GET', 
+success: function(response) { 
+$('#enrollmentDetail').html(response);
+} 
+}); 
+}); 
+}); 
+</script> 
+</body> 
+</html> 
+========================================= 
+======================================= 
+<!-- app5a/templates/app5a/enrollment_detail.html --> 
+<div> 
+<h2>Enrollment Details</h2> 
+<p>Student: {{ enrollment.student.name }}</p> 
+<p>Course: {{ enrollment.course.title }}</p> 
+<p>Enrollment Date: {{ enrollment.enrollment_date }}</p> 
+</div> 
+===================================== 
+===================================== 
+#app5a/templates/app5a/index.html 
+<!-- app5a/templates/app5a/index.html --> 
+<!DOCTYPE html> 
+<html lang="en">
+<head> 
+<meta charset="UTF-8"> 
+<title>Student Enrollment</title> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+</head> 
+<body> 
+<h1>Student Enrollment</h1> 
+<h2>Register Student</h2> 
+<form id="studentForm"> 
+{% csrf_token %} 
+{{ form.as_p }} 
+<button type="submit">Register</button> 
+</form> 
+<h2>Enroll Student</h2> 
+<form id="enrollmentForm"> 
+{% csrf_token %} 
+<select name="student" id="studentSelect"> 
+{% for student in students %} 
+<option value="{{ student.id }}">{{ student.name }}</option> 
+{% endfor %} 
+</select> 
+<select name="course" id="courseSelect"> 
+{% for course in courses %} 
+<option value="{{ course.id }}">{{ course.title }}</option> 
+{% endfor %} 
+</select>
+<button type="submit">Enroll</button> 
+</form> 
+<script> 
+$(document).ready(function() { 
+// Handle student registration 
+$('#studentForm').on('submit', function(event) { 
+event.preventDefault(); 
+$.ajax({ 
+url: "{% url 'register_student' %}", 
+type: 'POST', 
+data: $(this).serialize(), 
+success: function(response) { 
+if (response.status == 'success') { 
+alert('Student registered successfully!'); 
+$('#studentSelect').append(`<option 
+value="${response.student_id}">${response.student_name}</option>`); 
+} else { 
+alert('Error registering student.'); 
+} 
+} 
+}); 
+}); 
+// Handle student enrollment 
+$('#enrollmentForm').on('submit', function(event) { 
+event.preventDefault(); 
+$.ajax({ 
+url: "{% url 'enroll_student' %}",
+type: 'POST', 
+data: $(this).serialize(), 
+success: function(response) { 
+if (response.status == 'success') { 
+alert('Student enrolled successfully!'); 
+} else { 
+alert('Error enrolling student.'); 
+} 
+} 
+}); 
+}); 
+}); 
+</script> 
+</body> 
+</html>
