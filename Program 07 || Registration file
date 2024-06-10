@@ -1,1 +1,61 @@
-
+1. Develop a registration page for student enrolment as done in Module 2 but without page 
+refresh using AJAX. 
+django-admin startproject project5a 
+cd project5a 
+python manage.py startapp app5a 
+code . 
+=================================== 
+====================================== 
+#project5a/settings.py 
+# Application definition
+INSTALLED_APPS = [ 
+'django.contrib.admin', 
+'django.contrib.auth', 
+'django.contrib.contenttypes', 
+'django.contrib.sessions', 
+'django.contrib.messages', 
+'django.contrib.staticfiles', 
+'app5a', 
+] 
+=====================================================================
+ == 
+#program5a/urls.py 
+from django.contrib import admin 
+from django.urls import path, include 
+urlpatterns = [ 
+path('admin/', admin.site.urls), 
+path('app5a/', include('app5a.urls')), 
+] 
+===================================== 
+======================================= 
+#enroll_student.html  
+<!-- app5a/templates/app5a/enroll_student.html --> 
+<!DOCTYPE html> 
+<head> 
+<meta charset="UTF-8"> 
+<title>Enroll Student</title> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+</head> 
+<body> 
+<h1>Enroll Student</h1> 
+<form id="enrollmentForm"> 
+{% csrf_token %} 
+<div> 
+<label for="studentSelect">Select Student:</label> 
+<select name="student" id="studentSelect"> 
+{% for student in students %} 
+<option value="{{ student.id }}">{{ student.name }}</option> 
+{% endfor %} 
+</select> 
+</div> 
+<div> 
+<label for="courseSelect">Select Course:</label> 
+<select name="course" id="courseSelect"> 
+{% for course in courses %} 
+<option value="{{ course.id }}">{{ course.title }}</option> 
+{% endfor %} 
+</select> 
+</div> 
+<button type="submit">Enroll</button> 
+</form>
+<html lang="en">
