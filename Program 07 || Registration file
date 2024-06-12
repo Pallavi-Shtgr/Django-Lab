@@ -5,7 +5,7 @@ cd project5a
 python manage.py startapp app5a 
 code . 
 =================================== 
-====================================== 
+
 #project5a/settings.py 
 # Application definition
 INSTALLED_APPS = [ 
@@ -18,7 +18,7 @@ INSTALLED_APPS = [
 'app5a', 
 ] 
 =====================================================================
- == 
+
 #program5a/urls.py 
 from django.contrib import admin 
 from django.urls import path, include 
