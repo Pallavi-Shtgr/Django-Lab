@@ -81,7 +81,7 @@ console.log(response.errors);
 </script> 
 </body> 
 </html> 
-===================================== 
+
 ========================================= 
 <!-- app5a/templates/app5a/enrollment_list.html --> 
 <!DOCTYPE html>
@@ -213,7 +213,7 @@ path('enrollment/list/', views.enrollment_list, name='enrollment_list'),
 path('enrollment/list/<int:id>/', views.enrollment_detail, name='enrollment_detail'), 
 ] 
 ===================================== 
-===================================== 
+
 #app5a/models.py 
 from django.db import models 
 class Student(models.Model):
